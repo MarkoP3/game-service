@@ -16,13 +16,14 @@ internal sealed class PlayGameCommandHandler(ISender sender,
     public async Task<GameResultResponse> Handle(PlayGameCommand request, CancellationToken cancellationToken)
     {
         var getRandomChoiceTask = sender.Send(new GetRandomChoiceQuery(), cancellationToken);
+
         var getChoiceByIdTask = choiceRepository.GetChoiceByIdAsync(request.ChoiceId, cancellationToken);
 
         await Task.WhenAll(getChoiceByIdTask, getRandomChoiceTask);
 
         var randomComputerChoiceResponse = await getRandomChoiceTask;
-        var playerChoice = await getChoiceByIdTask
-            ?? throw new ChoiceNotFoundException(choiceId: request.ChoiceId);
+
+        var playerChoice = await getChoiceByIdTask ?? throw new ChoiceNotFoundException(choiceId: request.ChoiceId);
 
         ArgumentNullException.ThrowIfNull(randomComputerChoiceResponse);
 

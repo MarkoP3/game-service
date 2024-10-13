@@ -16,7 +16,7 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
         _scope = webAppFactory.Services.CreateAsyncScope();
         Sender = _scope.ServiceProvider.GetRequiredService<ISender>();
         DbContext = _scope.ServiceProvider.GetRequiredService<GameDbContext>();
-        DbContext.MigrateAndSeed();
+        DbContext.ApplyMigrationsAndSeed();
     }
 
 }

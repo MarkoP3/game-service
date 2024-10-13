@@ -38,20 +38,25 @@ public static class GameDataSeeder
         WeakerChoices = []
     };
 
-    public static void MigrateAndSeedData(this IHost app)
+    public static void ApplyMigrationsAndSeed(this IHost app)
     {
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;
         var context = services.GetRequiredService<GameDbContext>();
-        context.MigrateAndSeed();
+        context.ApplyMigrationsAndSeed();
     }
 
-    public static void MigrateAndSeed(this GameDbContext context)
+    //applies migrates the db removes all data from choice table and seeds data with basic game rules and choices
+    public static void ApplyMigrationsAndSeed(this GameDbContext context)
     {
         context.Database.Migrate();
+        
         context.Choices.ExecuteDelete();
+        
         context.AddRange(Rock, Paper, Scissors, Spock, Lizard);
+        
         context.SaveChanges();
+        
         var createdLizard = context.Choices.Single(choice => choice.Name == Lizard.Name);
         var createdPaper = context.Choices.Single(choice => choice.Name == Paper.Name);
         var createdSpock = context.Choices.Single(choice => choice.Name == Spock.Name);

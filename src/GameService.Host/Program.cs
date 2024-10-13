@@ -28,11 +28,12 @@ builder.Services.AddCors(options =>
         });
 });
 
-
 builder.Services.AddSqlServerDb(builder.Configuration);
+
 builder.Services.AddApiClients();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
 builder.Services.AddProblemDetails();
 
 builder.Services.AddMediatR(config =>
@@ -50,17 +51,18 @@ var app = builder.Build();
 
 var versionSet = app.NewApiVersionSet()
     .HasApiVersion(1.0)
-.ReportApiVersions()
-.Build();
+    .ReportApiVersions()
+    .Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MigrateAndSeedData();
+    app.ApplyMigrationsAndSeed();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseCors();
+
 app.UseHttpsRedirection();
 
 app.AddGameEndpointsV1(versionSet);

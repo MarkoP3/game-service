@@ -2,6 +2,7 @@
 using GameService.Application.Game.v1.Commands;
 using GameService.Application.Game.v1.Queries;
 using GameService.Domain.Enums;
+using GameService.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
@@ -57,6 +58,20 @@ public class GameTests(IntegrationTestWebAppFactory webAppFactory)
         Assert.Equal(expectedChoiceName, randomChoice.Name);
     }
 
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(0)]
+    public void GetRandomChoice_InvalidRandomNumberReturned_ShouldThrowException(int invalidSeededNumber)
+    {
+        //arrange
+        var query = new GetRandomChoiceQuery();
+        IntegrationTestWebAppFactory.MockRandomNumberGeneratorApiClient
+            .Setup(c => c.GenerateRandomNumberFromOneToOneHundredAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new RandomNumberResponse(invalidSeededNumber));
+
+        //assert
+        Assert.ThrowsAsync<InvalidRandomNumberGeneratedException>(async () => await Sender.Send(query));
+    }
 
     [Theory]
     #region Computer playing Rock and player playing all other combinations in order(Rock,Paper,Scissors,Spock,Lizard)
@@ -111,5 +126,18 @@ public class GameTests(IntegrationTestWebAppFactory webAppFactory)
 
         //assert
         Assert.Equal(gameResult.Results, expectedGameResult);
+    }
+
+    [Fact]
+    public async Task PlayGame_InvalidChoiceSent_ShouldThrowException()
+    {
+        //arrange
+        IntegrationTestWebAppFactory.MockRandomNumberGeneratorApiClient
+            .Setup(c => c.GenerateRandomNumberFromOneToOneHundredAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new RandomNumberResponse(10));
+        var command = new PlayGameCommand(-1);
+
+        //assert
+        await Assert.ThrowsAsync<ChoiceNotFoundException>(async () => await Sender.Send(command));
     }
 }
