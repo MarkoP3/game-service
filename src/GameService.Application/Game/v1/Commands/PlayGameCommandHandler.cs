@@ -2,6 +2,7 @@
 using GameService.Application.Dtos;
 using GameService.Application.Game.v1.Queries;
 using GameService.Domain.Enums;
+using GameService.Domain.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -20,10 +21,10 @@ internal sealed class PlayGameCommandHandler(ISender sender,
         await Task.WhenAll(getChoiceByIdTask, getRandomChoiceTask);
 
         var randomComputerChoiceResponse = await getRandomChoiceTask;
-        var playerChoice = await getChoiceByIdTask;
+        var playerChoice = await getChoiceByIdTask
+            ?? throw new ChoiceNotFoundException(choiceId: request.ChoiceId);
 
         ArgumentNullException.ThrowIfNull(randomComputerChoiceResponse);
-        ArgumentNullException.ThrowIfNull(playerChoice);
 
         var gameResult = (GameResult)playerChoice.Compare(randomComputerChoiceResponse.Id);
 

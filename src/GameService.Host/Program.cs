@@ -5,6 +5,7 @@ using GameService.Infrastructure.Seeders;
 using GameService.Infrastructure.ApiClients;
 using GameService.Infrastructure.Repositories;
 using Serilog;
+using GameService.Host.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSqlServerDb(builder.Configuration);
 builder.Services.AddApiClients();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddMediatR(config =>
 {
@@ -62,6 +66,8 @@ app.UseHttpsRedirection();
 app.AddGameEndpointsV1(versionSet);
 
 app.UseSerilogRequestLogging();
+
+app.UseExceptionHandler();
 
 await app.RunAsync();
 

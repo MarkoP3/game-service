@@ -10,11 +10,11 @@ public class ChoiceRepository(GameDbContext dbContext)
     public async Task<IEnumerable<Choice>> GetAllChoicesAsync(CancellationToken cancellationToken)
         => await dbContext.Choices.ToListAsync(cancellationToken);
 
-    public async Task<Choice> GetChoiceByIdAsync(int id, CancellationToken cancellationToken)
-        => await dbContext.Choices.Include(choice => choice.WeakerChoices).SingleAsync(choice => choice.Id == id, cancellationToken);
+    public async Task<Choice?> GetChoiceByIdAsync(int id, CancellationToken cancellationToken)
+        => await dbContext.Choices.Include(choice => choice.WeakerChoices).SingleOrDefaultAsync(choice => choice.Id == id, cancellationToken);
 
-    public async Task<Choice> GetChoiceAtIndexAsync(int index, CancellationToken cancellationToken)
-        => await dbContext.Choices.Include(choice => choice.WeakerChoices).ElementAtAsync(index, cancellationToken: cancellationToken);
+    public async Task<Choice?> GetChoiceAtIndexAsync(int index, CancellationToken cancellationToken)
+        => await dbContext.Choices.Include(choice => choice.WeakerChoices).ElementAtOrDefaultAsync(index, cancellationToken: cancellationToken);
 
 
     public Task<int> GetChoicesCountAsync(CancellationToken cancellationToken)
