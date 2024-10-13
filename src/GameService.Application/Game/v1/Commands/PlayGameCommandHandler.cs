@@ -3,10 +3,14 @@ using GameService.Application.Dtos;
 using GameService.Application.Game.v1.Queries;
 using GameService.Domain.Enums;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace GameService.Application.Game.v1.Commands;
 
-internal sealed class PlayGameCommandHandler(ISender sender, IChoiceRepository choiceRepository) : ICommandHandler<PlayGameCommand, GameResultResponse>
+internal sealed class PlayGameCommandHandler(ISender sender,
+    IChoiceRepository choiceRepository,
+    ILogger<PlayGameCommandHandler> logger)
+    : ICommandHandler<PlayGameCommand, GameResultResponse>
 {
     public async Task<GameResultResponse> Handle(PlayGameCommand request, CancellationToken cancellationToken)
     {
@@ -21,10 +25,13 @@ internal sealed class PlayGameCommandHandler(ISender sender, IChoiceRepository c
         ArgumentNullException.ThrowIfNull(randomComputerChoiceResponse);
         ArgumentNullException.ThrowIfNull(playerChoice);
 
+        var gameResult = (GameResult)playerChoice.Compare(randomComputerChoiceResponse.Id);
 
-        return new(
-            (GameResult)playerChoice.Compare(randomComputerChoiceResponse.Id),
-            playerChoice.Id,
-            randomComputerChoiceResponse.Id);
+        logger.LogInformation("Game initiate player chose {PlayerChoice} and computer chose {ComputerChoice}. Game Result {Result}",
+            playerChoice.Name,
+            randomComputerChoiceResponse.Name,
+            gameResult.ToString());
+
+        return new(gameResult, playerChoice.Id, randomComputerChoiceResponse.Id);
     }
 }

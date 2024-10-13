@@ -4,6 +4,7 @@ using GameService.Host.v1;
 using GameService.Infrastructure.Seeders;
 using GameService.Infrastructure.ApiClients;
 using GameService.Infrastructure.Repositories;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,9 @@ builder.Services.AddMediatR(config =>
 
 builder.Services.AddSwaggerGen();
 
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
 var app = builder.Build();
 
 var versionSet = app.NewApiVersionSet()
@@ -56,6 +60,8 @@ app.UseCors();
 app.UseHttpsRedirection();
 
 app.AddGameEndpointsV1(versionSet);
+
+app.UseSerilogRequestLogging();
 
 await app.RunAsync();
 

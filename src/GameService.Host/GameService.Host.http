@@ -1,1 +1,13 @@
 @GameService.Host_HostAddress = http://localhost:5237
+
+GET {{GameService.Host_HostAddress}}/choices?api-version=1.0
+###
+GET {{GameService.Host_HostAddress}}/choice??api-version=1.0
+###
+POST {{GameService.Host_HostAddress}}/play?api-version=1.0
+Content-Type: application/json
+
+{
+    "player": 1
+}
+###

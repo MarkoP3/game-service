@@ -11,7 +11,9 @@ using Testcontainers.MsSql;
 
 namespace GameService.Integration.Tests;
 
-public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
+public class IntegrationTestWebAppFactory 
+    : WebApplicationFactory<Program>,
+    IAsyncLifetime
 {
     private readonly MsSqlContainer _dbTestContainer;
     public static readonly Mock<IRandomNumberGeneratorApiClient> MockRandomNumberGeneratorApiClient = new();

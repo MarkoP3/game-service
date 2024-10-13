@@ -7,7 +7,8 @@ using Moq;
 
 namespace GameService.Integration.Tests;
 
-public class GameTests(IntegrationTestWebAppFactory webAppFactory) : BaseIntegrationTest(webAppFactory)
+public class GameTests(IntegrationTestWebAppFactory webAppFactory)
+    : BaseIntegrationTest(webAppFactory)
 {
     [Fact]
     public async Task GetChoices_GetAll_ShouldReturnAllChoices()
@@ -58,35 +59,41 @@ public class GameTests(IntegrationTestWebAppFactory webAppFactory) : BaseIntegra
 
 
     [Theory]
+    #region Computer playing Rock and player playing all other combinations in order(Rock,Paper,Scissors,Spock,Lizard)
     [InlineData(10, 1, GameResult.Tie)]
     [InlineData(10, 2, GameResult.Win)]
     [InlineData(10, 3, GameResult.Lose)]
     [InlineData(10, 4, GameResult.Win)]
     [InlineData(10, 5, GameResult.Lose)]
-
+    #endregion
+    #region Computer playing Paper and player playing all other combinations in order(Rock,Paper,Scissors,Spock,Lizard)
     [InlineData(11, 1, GameResult.Lose)]
     [InlineData(11, 2, GameResult.Tie)]
     [InlineData(11, 3, GameResult.Win)]
     [InlineData(11, 4, GameResult.Lose)]
     [InlineData(11, 5, GameResult.Win)]
-
+    #endregion
+    #region Computer playing Scissors and player playing all other combinations in order(Rock,Paper,Scissors,Spock,Lizard)
     [InlineData(12, 1, GameResult.Win)]
     [InlineData(12, 2, GameResult.Lose)]
     [InlineData(12, 3, GameResult.Tie)]
     [InlineData(12, 4, GameResult.Win)]
     [InlineData(12, 5, GameResult.Lose)]
-
+    #endregion
+    #region Computer playing Spock and player playing all other combinations in order(Rock,Paper,Scissors,Spock,Lizard)
     [InlineData(13, 1, GameResult.Lose)]
     [InlineData(13, 2, GameResult.Win)]
     [InlineData(13, 3, GameResult.Lose)]
     [InlineData(13, 4, GameResult.Tie)]
     [InlineData(13, 5, GameResult.Win)]
-
+    #endregion
+    #region Computer playing Lizard and player playing all other combinations in order(Rock,Paper,Scissors,Spock,Lizard)
     [InlineData(14, 1, GameResult.Win)]
     [InlineData(14, 2, GameResult.Lose)]
     [InlineData(14, 3, GameResult.Win)]
     [InlineData(14, 4, GameResult.Lose)]
     [InlineData(14, 5, GameResult.Tie)]
+    #endregion
     public async Task PlayGame_AgainsComputerWithSeeded_ShouldReturnExpectedChoice(
     int seededRandomNumber,
     int playerChoiceId,

@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameService.Infrastructure.Repositories;
 
-public class ChoiceRepository(GameDbContext dbContext) : IChoiceRepository
+public class ChoiceRepository(GameDbContext dbContext) 
+    : IChoiceRepository
 {
     public async Task<IEnumerable<Choice>> GetAllChoicesAsync(CancellationToken cancellationToken)
         => await dbContext.Choices.ToListAsync(cancellationToken);
