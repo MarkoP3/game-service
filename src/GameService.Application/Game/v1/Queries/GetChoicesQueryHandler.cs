@@ -11,7 +11,7 @@ internal sealed class GetChoicesQueryHandler(IChoiceRepository choiceRepository)
     {
         var choices = await choiceRepository.GetAllChoicesAsync(cancellationToken);
 
-        if (choices is null || choices.Any())
+        if (choices is null || !choices.Any())
             throw new NoAvailableChoicesException();
 
         return choices.Select(choice => new ChoiceResponse(choice));
