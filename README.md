@@ -27,23 +27,27 @@ You can run the application using the following methods:
 
 ### 1. Docker Compose
 
-The easiest way to run the app is by using the `docker-compose.yml` file located in the `deploy` folder. This will spin up an instance of MSSQL Server and the API without any additional configuration.
+The easiest way to run the app is by using the `docker-compose.yml` file located in the root folder. This will spin up an instance of MSSQL Server and the API without any additional configuration.
 
-Run the following command from `deploy` folder:
+Run the following command from root folder:
 
 ```bash
 docker-compose up --build
 ```
+
+After running this command the app will be hosted on http://localhost:8080
 
 Or if using `Visual Studio`, set the docker compose project as startup and run the app.
 
 ### 2. Local Development without Docker
 
 Alternatively, you can run the API locally by modifying the `appsettings.Development.json` file located in the `src/GameService.Host` folder. Change the `GameDb` variable in the `ConnectionStrings` section to point to your existing database.
-
+And run this command in `src/GameService.Host` folder:
 ```bash
 dotnet run
 ```
+
+After running this command the app will be hosted on http://localhost:8080 and https://localhost:8081
 
 ## API Documentation
 
@@ -51,10 +55,16 @@ The API includes Swagger documentation, providing an interactive interface to ex
 
 ## Applying Migrations
 
-Migrations for the application are located in the `src/GameService.Infrastructure/Migrations` folder. To apply the migrations manually, use the following command:
+Migrations for the application are located in the `src/GameService.Infrastructure/Migrations` folder. To apply the migrations manually modify the `appsettings.Development.json` file located in the `src/GameService.Host` folder. Change the `GameDb` variable in the `ConnectionStrings` section to point to your existing database and use the following command in the root folder :
 
 ```bash
-dotnet ef database update
+dotnet ef database update --startup-project src/GameService.Host --project src/GameService.Infrastructure
+```
+
+Make sure that the dotnet ef is installed if not run this command to install it gloablly:
+
+```bash
+dotnet tool install -g dotnet-ef
 ```
 
 For the development environment, when running the app using Docker or dotnet run, migrations will be automatically applied. The database will also be seeded with predefined choices and rules for the game to ensure a smooth start.

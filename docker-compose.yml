@@ -8,12 +8,13 @@ services:
     container_name: gameservice-api
     build:
       context: .
-      dockerfile: ../src/GameService.Host/Dockerfile
+      dockerfile: ./src/GameService.Host/Dockerfile
   gameservice.db:
     container_name: gameservice-db
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=*TestP4ssword*
+      - SA_PASSWORD=*TestP4ssword*
     ports:
       - "1433:1433"

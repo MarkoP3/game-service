@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameService.Domain", "src\G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameService.Infrastructure", "src\GameService.Infrastructure\GameService.Infrastructure.csproj", "{D9638C5C-8168-4BB4-B9F1-2208BC959F43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameService.Integration.Tests", "test\GameService.Integration.Tests\GameService.Integration.Tests.csproj", "{24EEFC3E-E22D-46E4-90E9-E346EB90F2AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameService.Integration.Tests", "test\GameService.Integration.Tests\GameService.Integration.Tests.csproj", "{24EEFC3E-E22D-46E4-90E9-E346EB90F2AF}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "deploy\docker-compose.dcproj", "{656253BE-5587-448B-A7EF-E610368136F9}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{656253BE-5587-448B-A7EF-E610368136F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,7 +61,6 @@ Global
 		{BC1A3405-E6AC-47DE-96A8-9DCF12AECBE9} = {AC6D4F4D-089F-489D-A5CB-9E1BE7CDA3F2}
 		{D9638C5C-8168-4BB4-B9F1-2208BC959F43} = {AC6D4F4D-089F-489D-A5CB-9E1BE7CDA3F2}
 		{24EEFC3E-E22D-46E4-90E9-E346EB90F2AF} = {513B24FF-F7BF-40CC-A5A1-F0C39B8F18C0}
-		{656253BE-5587-448B-A7EF-E610368136F9} = {7B07A76D-D86D-4205-8A0B-DBB24B7101F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31A6AA48-8B07-4E27-A72F-727F556EF4A2}
