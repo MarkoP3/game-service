@@ -3,6 +3,7 @@ using GameService.Application.Options.ApiClients;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Polly;
 using Refit;
 
 namespace GameService.Infrastructure.ApiClients;
@@ -18,6 +19,7 @@ public static class DependencyInjection
             });
 
         services.AddRefitClient<IRandomNumberGeneratorApiClient>()
+            .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)))
             .ConfigureHttpClient((serviceProvided, httpClient) =>
             {
                 var options = serviceProvided.GetRequiredService<IOptions<RandomNumberGeneratorApiClientOptions>>().Value;
