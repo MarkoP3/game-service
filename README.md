@@ -43,6 +43,7 @@ Or if using `Visual Studio`, set the docker compose project as startup and run t
 
 Alternatively, you can run the API locally by modifying the `appsettings.Development.json` file located in the `src/GameService.Host` folder. Change the `GameDb` variable in the `ConnectionStrings` section to point to your existing database.
 And run this command in `src/GameService.Host` folder:
+
 ```bash
 dotnet run
 ```
@@ -52,6 +53,19 @@ After running this command the app will be hosted on http://localhost:8080 and h
 ## API Documentation
 
 The API includes Swagger documentation, providing an interactive interface to explore and test the available endpoints. You can access the Swagger UI by navigating to `/swagger` after starting the application.
+
+### Health Check
+
+The API includes a health check endpoint to monitor the health of the application and its dependencies (e.g., the database).
+
+You can access the health check at:
+
+```bash
+GET /health
+```
+
+- **Healthy:** Returns `200 OK`.
+- **Unhealthy:** Returns `503 Service Unavailable`.
 
 ## Applying Migrations
 
