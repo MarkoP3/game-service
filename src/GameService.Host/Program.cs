@@ -6,10 +6,14 @@ using GameService.Infrastructure.ApiClients;
 using GameService.Infrastructure.Repositories;
 using Serilog;
 using GameService.Host.Infrastructure;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("GameDb")!);
 
 builder.Services.AddApiVersioning(options =>
 {
@@ -62,6 +66,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+
+app.MapHealthChecks("/health", new HealthCheckOptions()
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponseNoExceptionDetails
+});
 
 app.UseHttpsRedirection();
 
